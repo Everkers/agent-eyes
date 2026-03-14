@@ -23,7 +23,7 @@ The browser client collects events and streams them over WebSocket to the MCP se
 ### Install
 
 ```bash
-npm install agent-eyes
+npm install @everkers/agent-eyes
 ```
 </Step>
 
@@ -33,7 +33,7 @@ npm install agent-eyes
 The simplest setup — just create an instance and start it:
 
 ```ts
-import { AgentEyes } from 'agent-eyes';
+import { AgentEyes } from '@everkers/agent-eyes';
 
 const eyes = new AgentEyes({ mcpBridge: true });
 eyes.start();
@@ -45,14 +45,14 @@ Setting `mcpBridge: true` connects to the MCP server's WebSocket on `ws://localh
 <Step>
 ### Connect your agent
 
-Add agent-eyes to your MCP config (e.g. `.kiro/settings/mcp.json` or `mcp.json`):
+Add AgentEyes to your MCP config (e.g. `.kiro/settings/mcp.json` or `mcp.json`):
 
 ```json
 {
   "mcpServers": {
     "agent-eyes": {
       "command": "npx",
-      "args": ["agent-eyes"]
+      "args": ["@everkers/agent-eyes"]
     }
   }
 }

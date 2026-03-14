@@ -9,8 +9,8 @@
 </p>
 
 <p align="center">
-  <a href="https://www.npmjs.com/package/agent-eyes"><img src="https://img.shields.io/npm/v/agent-eyes.svg?style=flat-square" alt="npm version" /></a>
-  <a href="https://github.com/Everkers/agent-eyes/blob/main/LICENSE"><img src="https://img.shields.io/npm/l/agent-eyes.svg?style=flat-square" alt="license" /></a>
+  <a href="https://www.npmjs.com/package/@everkers/agent-eyes"><img src="https://img.shields.io/npm/v/@everkers/agent-eyes.svg?style=flat-square" alt="npm version" /></a>
+  <a href="https://github.com/Everkers/agent-eyes/blob/main/LICENSE"><img src="https://img.shields.io/npm/l/@everkers/agent-eyes.svg?style=flat-square" alt="license" /></a>
 </p>
 
 ---
@@ -35,7 +35,7 @@ AgentEyes streams console logs, network requests, DOM snapshots, errors, perform
 
 **React (Provider component)**
 ```tsx
-import { AgentEyesProvider } from 'agent-eyes';
+import { AgentEyesProvider } from '@everkers/agent-eyes';
 
 function App() {
   return (
@@ -49,7 +49,7 @@ function App() {
 **Vite (Plugin — zero app code)**
 ```ts
 // vite.config.ts
-import { agentEyesPlugin } from 'agent-eyes/vite';
+import { agentEyesPlugin } from '@everkers/agent-eyes/vite';
 export default defineConfig({ plugins: [agentEyesPlugin()] });
 ```
 
@@ -57,7 +57,7 @@ export default defineConfig({ plugins: [agentEyesPlugin()] });
 ```tsx
 // app/agent-eyes-provider.tsx
 "use client";
-import { AgentEyesProvider } from "agent-eyes";
+import { AgentEyesProvider } from "@everkers/agent-eyes";
 
 export default function AgentEyesWrapper({ children }: { children: React.ReactNode }) {
   return (
@@ -79,7 +79,7 @@ export default function RootLayout({ children }) {
 
 **Vanilla (no framework)**
 ```ts
-import { AgentEyes } from 'agent-eyes';
+import { AgentEyes } from '@everkers/agent-eyes';
 
 const eyes = new AgentEyes({ mcpBridge: true });
 eyes.start();
@@ -94,7 +94,7 @@ Add to your MCP config (`.kiro/settings/mcp.json`, `.cursor/mcp.json`, `claude_d
   "mcpServers": {
     "agent-eyes": {
       "command": "npx",
-      "args": ["agent-eyes"]
+      "args": ["@everkers/agent-eyes"]
     }
   }
 }
@@ -240,7 +240,7 @@ Set it in your MCP config:
   "mcpServers": {
     "agent-eyes": {
       "command": "npx",
-      "args": ["agent-eyes"],
+      "args": ["@everkers/agent-eyes"],
       "env": {
         "AGENT_EYES_PORT": "8888"
       }
@@ -266,7 +266,7 @@ const eyes = new AgentEyes({ mcpBridge: 'ws://localhost:8888' });
 ## React Hooks
 
 ```tsx
-import { useAgentEyes, useAgentEvents, useAgentSnapshot } from 'agent-eyes';
+import { useAgentEyes, useAgentEvents, useAgentSnapshot } from '@everkers/agent-eyes';
 
 function DevPanel() {
   const eyes = useAgentEyes();                    // the AgentEyes instance

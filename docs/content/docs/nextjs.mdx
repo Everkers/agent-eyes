@@ -14,7 +14,7 @@ Create a client-side provider component:
 ```tsx title="app/agent-eyes-provider.tsx"
 'use client';
 
-import { AgentEyesProvider } from 'agent-eyes/react';
+import { AgentEyesProvider } from '@everkers/agent-eyes/react';
 
 export default function AgentEyesWrapper({
   children,
@@ -86,7 +86,7 @@ Add to your `.kiro/settings/mcp.json` or project `mcp.json`:
   "mcpServers": {
     "agent-eyes": {
       "command": "npx",
-      "args": ["agent-eyes"]
+      "args": ["@everkers/agent-eyes"]
     }
   }
 }

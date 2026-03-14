@@ -10,7 +10,7 @@ The React integration provides a context provider that manages the `AgentEyes` l
 Wrap your app with `AgentEyesProvider`:
 
 ```tsx title="src/App.tsx"
-import { AgentEyesProvider } from 'agent-eyes/react';
+import { AgentEyesProvider } from '@everkers/agent-eyes/react';
 
 export default function App() {
   return (
@@ -53,7 +53,7 @@ Pass any `AgentEyesConfig` options through the `config` prop:
 Once the provider is in place, use the hooks anywhere in your component tree:
 
 ```tsx
-import { useAgentEyes, useAgentEvents } from 'agent-eyes/react';
+import { useAgentEyes, useAgentEvents } from '@everkers/agent-eyes/react';
 
 function DebugPanel() {
   const eyes = useAgentEyes();

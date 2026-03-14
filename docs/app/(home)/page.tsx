@@ -599,7 +599,7 @@ export default function HomePage() {
 
           {/* Install hint */}
           <div className="ae-up d5 relative z-10 mt-14" style={{ fontFamily: 'var(--font-mono), monospace', fontSize: 13, color: 'var(--c-muted)', letterSpacing: '0.04em' }}>
-            npm install agent-eyes --save-dev<span className="ae-blink" aria-hidden="true" />
+            npm install @everkers/agent-eyes --save-dev<span className="ae-blink" aria-hidden="true" />
           </div>
         </section>
 
@@ -737,8 +737,8 @@ export default function HomePage() {
               </div>
             </div>
             <div className="ae-setup-body ae-pre-wrap">
-              <CopyButton text={`import { AgentEyes } from 'agent-eyes'\n\nconst eyes = new AgentEyes()\neyes.start()`} />
-              <div className="ae-pre"><span className="kw">import</span>{' { AgentEyes } '}<span className="kw">from</span> <span className="str">&apos;agent-eyes&apos;</span>{'\n\n'}<span className="kw">const</span> <span className="fn">eyes</span> = <span className="kw">new</span> <span className="fn">AgentEyes</span>(){'\n'}<span className="fn">eyes</span>.<span className="fn">start</span>()</div>
+              <CopyButton text={`import { AgentEyes } from '@everkers/agent-eyes'\n\nconst eyes = new AgentEyes()\neyes.start()`} />
+              <div className="ae-pre"><span className="kw">import</span>{' { AgentEyes } '}<span className="kw">from</span> <span className="str">&apos;@everkers/agent-eyes&apos;</span>{'\n\n'}<span className="kw">const</span> <span className="fn">eyes</span> = <span className="kw">new</span> <span className="fn">AgentEyes</span>(){'\n'}<span className="fn">eyes</span>.<span className="fn">start</span>()</div>
             </div>
             <div className="ae-setup-footer">
               <Zap style={{ width: 12, height: 12, display: 'inline', verticalAlign: '-1px', marginRight: 4, color: 'var(--c-amber-dim)' }} />
@@ -763,8 +763,8 @@ export default function HomePage() {
               </div>
             </div>
             <div className="ae-setup-body ae-pre-wrap">
-              <CopyButton text={`{\n  "mcpServers": {\n    "agent-eyes": {\n      "command": "npx",\n      "args": ["agent-eyes"]\n    }\n  }\n}`} />
-              <div className="ae-pre"><span className="cm">{'// Add to your editor\'s MCP config'}</span>{'\n'}{'{\n  '}<span className="str">&quot;mcpServers&quot;</span>{': {\n    '}<span className="str">&quot;agent-eyes&quot;</span>{': {\n      '}<span className="str">&quot;command&quot;</span>{': '}<span className="str">&quot;npx&quot;</span>{',\n      '}<span className="str">&quot;args&quot;</span>{': ['}<span className="str">&quot;agent-eyes&quot;</span>{']'}{'\n    }\n  }\n}'}</div>
+              <CopyButton text={`{\n  "mcpServers": {\n    "agent-eyes": {\n      "command": "npx",\n      "args": ["@everkers/agent-eyes"]\n    }\n  }\n}`} />
+              <div className="ae-pre"><span className="cm">{'// Add to your editor\'s MCP config'}</span>{'\n'}{'{\n  '}<span className="str">&quot;mcpServers&quot;</span>{': {\n    '}<span className="str">&quot;agent-eyes&quot;</span>{': {\n      '}<span className="str">&quot;command&quot;</span>{': '}<span className="str">&quot;npx&quot;</span>{',\n      '}<span className="str">&quot;args&quot;</span>{': ['}<span className="str">&quot;@everkers/agent-eyes&quot;</span>{']'}{'\n    }\n  }\n}'}</div>
             </div>
             <div className="ae-setup-footer">
               Works with Cursor, VS Code, Windsurf, Kiro, and any MCP-compatible agent.
@@ -826,7 +826,7 @@ export default function HomePage() {
           <div className="ae-footer-links">
             <Link href="/docs">Docs</Link>
             <a href="https://github.com/Everkers/agent-eyes" target="_blank" rel="noopener noreferrer">GitHub</a>
-            <a href="https://www.npmjs.com/package/agent-eyes" target="_blank" rel="noopener noreferrer">npm</a>
+            <a href="https://www.npmjs.com/package/@everkers/agent-eyes" target="_blank" rel="noopener noreferrer">npm</a>
           </div>
         </footer>
 

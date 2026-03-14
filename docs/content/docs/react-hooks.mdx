@@ -10,7 +10,7 @@ All hooks require `AgentEyesProvider` to be mounted above them in the component 
 Returns the `AgentEyes` instance directly.
 
 ```tsx
-import { useAgentEyes } from 'agent-eyes/react';
+import { useAgentEyes } from '@everkers/agent-eyes/react';
 
 function MyComponent() {
   const eyes = useAgentEyes();
@@ -43,7 +43,7 @@ function MyComponent() {
 Subscribe to events of a specific type. Returns a live-updating array.
 
 ```tsx
-import { useAgentEvents } from 'agent-eyes/react';
+import { useAgentEvents } from '@everkers/agent-eyes/react';
 
 function ErrorList() {
   const errors = useAgentEvents('error');
@@ -73,7 +73,7 @@ function ErrorList() {
 Returns a full application state snapshot, updated in real-time.
 
 ```tsx
-import { useAgentSnapshot } from 'agent-eyes/react';
+import { useAgentSnapshot } from '@everkers/agent-eyes/react';
 
 function Dashboard() {
   const snapshot = useAgentSnapshot();

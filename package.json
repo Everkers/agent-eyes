@@ -1,6 +1,6 @@
 {
-  "name": "agent-eyes",
-  "version": "0.1.0",
+  "name": "@everkers/agent-eyes",
+  "version": "1.1.0",
   "description": "Give LLMs and coding agents eyes into your running app — logs, network, UI, errors, performance, and React components.",
   "type": "module",
   "main": "dist/index.cjs",
@@ -26,7 +26,8 @@
   ],
   "files": [
     "dist",
-    "README.md"
+    "README.md",
+    "LICENSE"
   ],
   "scripts": {
     "build": "tsup",
@@ -44,10 +45,32 @@
     "vite",
     "observability",
     "ai",
-    "coding-assistant"
+    "coding-assistant",
+    "mcp",
+    "model-context-protocol",
+    "browser-devtools",
+    "error-tracking",
+    "network-monitoring",
+    "console-logs",
+    "dom-snapshot",
+    "performance-metrics",
+    "react-components",
+    "ai-agent",
+    "developer-tools",
+    "web-debugging",
+    "frontend",
+    "monitoring"
   ],
   "author": "",
   "license": "Apache-2.0",
+  "homepage": "https://www.npmjs.com/package/@everkers/agent-eyes",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/everkers/agent-eyes.git"
+  },
+  "bugs": {
+    "url": "https://github.com/everkers/agent-eyes/issues"
+  },
   "peerDependencies": {
     "react": ">=18.0.0",
     "react-dom": ">=18.0.0"
