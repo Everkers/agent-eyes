@@ -1,39 +1,49 @@
-# agent-eyes 👁️
+<p align="center">
+  <img src="docs/assets/logo/logo.png" alt="AgentEyes" width="140" />
+</p>
 
-Give LLMs and coding agents eyes into your running app.
+<h1 align="center">AgentEyes</h1>
 
-Captures console logs, network requests, DOM snapshots, errors, performance metrics, and React component renders — all exposed as an MCP server that any agent can connect to.
+<p align="center">
+  Give your AI coding agent eyes into your running app.
+</p>
 
-**Dev-only by default.** In production, agent-eyes is completely inert — no monkey-patching, no WebSocket connections, zero overhead.
+<p align="center">
+  <a href="https://www.npmjs.com/package/agent-eyes"><img src="https://img.shields.io/npm/v/agent-eyes.svg?style=flat-square" alt="npm version" /></a>
+  <a href="https://github.com/Everkers/agent-eyes/blob/main/LICENSE"><img src="https://img.shields.io/npm/l/agent-eyes.svg?style=flat-square" alt="license" /></a>
+</p>
 
-## Architecture
+---
+
+AgentEyes streams console logs, network requests, DOM snapshots, errors, performance metrics, React component renders, and screenshots from your browser — directly to your coding agent over [MCP](https://modelcontextprotocol.io).
+
+**Dev-only by default.** In production, AgentEyes is completely inert — no monkey-patching, no WebSocket connections, zero overhead.
+
+## How it works
 
 ```
-┌─────────────────────┐     WebSocket      ┌──────────────────┐     stdio/MCP     ┌─────────────┐
-│   Your App          │ ──────────────────> │  agent-eyes      │ <───────────────> │  Any Agent   │
-│   (browser)         │   events stream     │  MCP Server      │   tools/queries   │  (Kiro,      │
-│                     │                     │  (localhost:9960) │                   │   Cursor,    │
-│  AgentEyes client   │                     │                   │                   │   Claude...) │
-└─────────────────────┘                     └──────────────────┘                   └─────────────┘
+┌──────────────┐    WebSocket     ┌──────────────┐    stdio/MCP    ┌──────────────┐
+│   Your App   │ ──────────────>  │  AgentEyes   │ <────────────>  │  Any Agent   │
+│   (browser)  │  events stream   │  MCP Server  │  tools/queries  │  (Kiro,      │
+│              │                  │  :9960       │                 │   Cursor...) │
+└──────────────┘                  └──────────────┘                 └──────────────┘
 ```
 
-## Install
+## Quick start
 
-```bash
-npm install agent-eyes --save-dev
-```
+### 1. Add to your app
 
-## Quick Start
-
-### 1. Add the client to your app
-
-**React (Provider)**
+**React (Provider component)**
 ```tsx
 import { AgentEyesProvider } from 'agent-eyes';
 
-<AgentEyesProvider config={{ mcpBridge: true }}>
-  <App />
-</AgentEyesProvider>
+function App() {
+  return (
+    <AgentEyesProvider config={{ mcpBridge: true }}>
+      <YourApp />
+    </AgentEyesProvider>
+  );
+}
 ```
 
 **Vite (Plugin — zero app code)**

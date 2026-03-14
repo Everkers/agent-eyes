@@ -3,7 +3,7 @@ import Image from 'next/image';
 import logo from '@/assets/logo/logo.png';
 
 export const gitConfig = {
-  user: 'your-org',
+  user: 'Everkers',
   repo: 'agent-eyes',
   branch: 'main',
 };

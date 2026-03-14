@@ -825,7 +825,7 @@ export default function HomePage() {
           </span>
           <div className="ae-footer-links">
             <Link href="/docs">Docs</Link>
-            <a href="https://github.com/user/agent-eyes" target="_blank" rel="noopener noreferrer">GitHub</a>
+            <a href="https://github.com/Everkers/agent-eyes" target="_blank" rel="noopener noreferrer">GitHub</a>
             <a href="https://www.npmjs.com/package/agent-eyes" target="_blank" rel="noopener noreferrer">npm</a>
           </div>
         </footer>

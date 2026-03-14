@@ -47,7 +47,7 @@
     "coding-assistant"
   ],
   "author": "",
-  "license": "MIT",
+  "license": "Apache-2.0",
   "peerDependencies": {
     "react": ">=18.0.0",
     "react-dom": ">=18.0.0"
