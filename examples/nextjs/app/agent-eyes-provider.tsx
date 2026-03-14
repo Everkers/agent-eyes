@@ -1,6 +1,6 @@
 "use client";
 
-import { AgentEyesProvider } from "agent-eyes";
+import { AgentEyesProvider } from "@everkers/agent-eyes";
 
 export default function AgentEyesWrapper({ children }: { children: React.ReactNode }) {
   return (

@@ -17,7 +17,7 @@ export interface AgentEyesVitePluginOptions {
  *
  * ```ts
  * // vite.config.ts
- * import { agentEyesPlugin } from 'agent-eyes/vite';
+ * import { agentEyesPlugin } from '@everkers/agent-eyes/vite';
  *
  * export default defineConfig({
  *   plugins: [agentEyesPlugin()],
@@ -33,7 +33,7 @@ export function agentEyesPlugin(options: AgentEyesVitePluginOptions = {}): any {
   });
 
   const initCode = `
-import { AgentEyes } from 'agent-eyes';
+import { AgentEyes } from '@everkers/agent-eyes';
 const eyes = new AgentEyes(${configJSON});
 eyes.start();
 window.__AGENT_EYES__ = eyes;

@@ -1,7 +1,9 @@
-import html2canvas from "html2canvas";
+import html2canvas from "html2canvas-pro";
 
 /**
- * Captures a screenshot of the current page using html2canvas.
+ * Captures a screenshot of the current page using html2canvas-pro.
+ * This fork supports modern CSS color functions (oklab, oklch, lab, lch, etc.)
+ * that the original html2canvas cannot parse.
  * Returns a base64-encoded PNG data URL.
  */
 export async function captureScreenshot(options?: {
@@ -22,7 +24,8 @@ export async function captureScreenshot(options?: {
     allowTaint: false,
     scale: Math.min(1, maxWidth / window.innerWidth),
     logging: false,
-    backgroundColor: getComputedStyle(document.documentElement).backgroundColor || "#ffffff",
+    backgroundColor:
+      getComputedStyle(document.documentElement).backgroundColor || "#ffffff",
   });
 
   return canvas.toDataURL("image/png", quality);

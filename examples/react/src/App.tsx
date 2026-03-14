@@ -1,4 +1,4 @@
-import { AgentEyesProvider } from "agent-eyes";
+import { AgentEyesProvider } from "@everkers/agent-eyes";
 
 export default function App() {
   return (

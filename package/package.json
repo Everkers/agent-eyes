@@ -91,7 +91,7 @@
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.27.1",
-    "html2canvas": "^1.4.1",
+    "html2canvas-pro": "^2.0.2",
     "ws": "^8.19.0"
   }
 }

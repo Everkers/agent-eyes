@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@takumi-rs/image-response": "^0.72.0",
-    "agent-eyes": "*",
+    "@everkers/agent-eyes": "file:..",
     "fumadocs-core": "16.6.17",
     "fumadocs-mdx": "14.2.10",
     "fumadocs-ui": "16.6.17",

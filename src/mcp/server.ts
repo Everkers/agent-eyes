@@ -2,6 +2,7 @@ import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { z } from "zod";
 import { WebSocketServer, WebSocket } from "ws";
+import { createConnection } from "net";
 import type { AgentEvent } from "../types";
 
 /**
@@ -56,32 +57,75 @@ function getEvents(type?: string, limit?: number): AgentEvent[] {
   return result;
 }
 
-function getSnapshot() {
+function getSnapshot(limit = 50) {
+  const cap = (arr: AgentEvent[]) => arr.slice(-limit);
   return {
-    logs: events.filter((e) => e.type === "log"),
-    network: events.filter((e) => e.type === "network"),
-    errors: events.filter((e) => e.type === "error"),
-    dom: events.filter((e) => e.type === "dom-snapshot"),
-    performance: events.filter((e) => e.type === "performance"),
-    components: events.filter((e) => e.type === "react-component"),
+    logs: cap(events.filter((e) => e.type === "log")),
+    network: cap(events.filter((e) => e.type === "network")),
+    errors: cap(events.filter((e) => e.type === "error")),
+    dom: events.filter((e) => e.type === "dom-snapshot").slice(-1),
+    performance: cap(events.filter((e) => e.type === "performance")),
+    components: cap(events.filter((e) => e.type === "react-component")),
     meta: {
       totalEvents: events.length,
       connectedBrowsers: connectedClients.size,
+      limitPerCategory: limit,
       timestamp: Date.now(),
     },
   };
 }
 
+// ── Port management ──
+
+/** Check if a port is in use by attempting a TCP connection */
+function isPortInUse(port: number): Promise<boolean> {
+  return new Promise((resolve) => {
+    const socket = createConnection({ port, host: "127.0.0.1" });
+    socket.once("connect", () => {
+      socket.destroy();
+      resolve(true);
+    });
+    socket.once("error", () => {
+      socket.destroy();
+      resolve(false);
+    });
+  });
+}
+
+/** Kill whatever process is holding the port (best-effort, cross-platform) */
+async function killPortHolder(port: number): Promise<void> {
+  const { exec } = await import("child_process");
+  return new Promise((resolve) => {
+    const isWin = process.platform === "win32";
+    const cmd = isWin
+      ? `for /f "tokens=5" %a in ('netstat -aon ^| findstr :${port} ^| findstr LISTENING') do taskkill /F /PID %a`
+      : `lsof -ti tcp:${port} | xargs kill -9 2>/dev/null`;
+
+    exec(cmd, () => {
+      // Give the OS a moment to release the port
+      setTimeout(resolve, 500);
+    });
+  });
+}
+
 // ── WebSocket server for browser clients ──
 function startWSServer(port: number): Promise<WebSocketServer> {
-  return new Promise((resolve, reject) => {
+  return new Promise(async (resolve, reject) => {
+    // If the port is already occupied, kill the stale process so the
+    // browser reconnects to *this* instance (the one the IDE talks to).
+    if (await isPortInUse(port)) {
+      console.error(`[agent-eyes] Port ${port} in use — killing stale process...`);
+      await killPortHolder(port);
+    }
+
     const wss = new WebSocketServer({ port });
 
     wss.on("listening", () => resolve(wss));
 
     wss.on("error", (err: NodeJS.ErrnoException) => {
       if (err.code === "EADDRINUSE") {
-        console.error(`[agent-eyes] Port ${port} in use, trying ${port + 1}...`);
+        // Race condition: something grabbed the port between our check and bind
+        console.error(`[agent-eyes] Port ${port} still in use, trying ${port + 1}...`);
         wss.close();
         startWSServer(port + 1).then(resolve, reject);
       } else {
@@ -217,9 +261,11 @@ function createMCPServer() {
   server.tool(
     "get_snapshot",
     "Get a full snapshot of the application state — logs, network, errors, DOM, performance, and React components all at once.",
-    {},
-    async () => {
-      return { content: [{ type: "text", text: JSON.stringify(getSnapshot(), null, 2) }] };
+    {
+      limit: z.number().optional().describe("Max entries per category (default: 50). DOM always returns latest only."),
+    },
+    async ({ limit }) => {
+      return { content: [{ type: "text", text: JSON.stringify(getSnapshot(limit ?? 50), null, 2) }] };
     }
   );
 
