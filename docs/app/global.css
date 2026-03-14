@@ -1,0 +1,14 @@
+@import 'tailwindcss';
+@import 'fumadocs-ui/css/neutral.css';
+@import 'fumadocs-ui/css/preset.css';
+
+/* Fill any layout gap below the landing page */
+body:has(.ae-page) {
+  background: oklch(0.14 0.008 280);
+}
+body:has(.ae-page) #nd-home-layout {
+  background: oklch(0.14 0.008 280);
+}
+body:has(.ae-page) .ae-page {
+  flex: 1;
+}

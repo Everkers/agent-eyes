@@ -1,0 +1,50 @@
+---
+title: Vite Plugin
+description: Auto-inject agent-eyes in Vite dev mode with zero code changes.
+---
+
+The Vite plugin automatically injects agent-eyes into your app during development. No manual setup needed — it uses a virtual module that initializes everything for you.
+
+## Setup
+
+```ts title="vite.config.ts"
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
+import { agentEyesPlugin } from 'agent-eyes/vite';
+
+export default defineConfig({
+  plugins: [
+    react(),
+    agentEyesPlugin(),
+  ],
+});
+```
+
+That's it. When you run `vite dev`, agent-eyes will automatically start collecting events and connect to the MCP bridge.
+
+## Options
+
+```ts
+agentEyesPlugin({
+  // All standard AgentEyes config options
+  maxBufferSize: 1000,
+  collectors: {
+    reactComponents: true,
+  },
+  network: {
+    ignorePatterns: [/hot-update/],
+  },
+})
+```
+
+## How it works
+
+The plugin:
+
+1. Registers a virtual module `virtual:agent-eyes` that creates and starts an `AgentEyes` instance
+2. Injects an import of this virtual module into your app's entry point
+3. Only activates in dev mode (`serve` command) — completely absent from production builds
+
+## Production builds
+
+The plugin only runs during `vite dev`. When you run `vite build`, no agent-eyes code is included in the output.

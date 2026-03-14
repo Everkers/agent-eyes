@@ -1,0 +1,90 @@
+---
+title: MCP Tools
+description: All 11 tools your agent gets when connected to agent-eyes.
+---
+
+When your agent connects to the agent-eyes MCP server, it gets access to these tools. No configuration needed — they all work out of the box.
+
+## get_console_logs
+
+Capture log, warn, error, debug, and info entries with arguments and stack traces.
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `level` | `string?` | Filter by log level |
+| `limit` | `number?` | Max entries to return (most recent first) |
+
+## get_network_requests
+
+Inspect fetch and XHR requests with method, URL, status, headers, request/response bodies, and timing.
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `method` | `string?` | Filter by HTTP method (GET, POST, etc.) |
+| `status_min` | `number?` | Minimum status code |
+| `status_max` | `number?` | Maximum status code |
+| `url_contains` | `string?` | Filter URLs containing this string |
+| `limit` | `number?` | Max entries to return |
+
+## get_errors
+
+Runtime errors and unhandled promise rejections.
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `limit` | `number?` | Max entries to return |
+
+## get_dom_snapshot
+
+Returns the latest simplified DOM snapshot with important attributes like `id`, `class`, `role`, `aria-label`, and `data-testid`.
+
+No parameters.
+
+## get_performance_metrics
+
+Core Web Vitals (FCP, LCP), load timing, and memory usage.
+
+No parameters.
+
+## get_react_components
+
+Component render information including names, props, and render counts.
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `name` | `string?` | Filter by component name |
+| `limit` | `number?` | Max entries to return |
+
+## get_snapshot
+
+Everything at once — full application state snapshot including logs, network, errors, DOM, performance, and React components.
+
+No parameters. This is the most useful tool for getting a complete picture.
+
+## get_failed_requests
+
+Shortcut to get all failed network requests (status >= 400 or network errors).
+
+No parameters.
+
+## take_screenshot
+
+Capture a visual screenshot of the running application. Returns a base64-encoded PNG image.
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `selector` | `string?` | CSS selector to capture a specific element |
+| `quality` | `number?` | Image quality 0-1 (default: 0.8) |
+| `maxWidth` | `number?` | Max width in pixels (default: 1280) |
+
+## get_status
+
+Check connection status — how many browsers are connected and how many events are buffered.
+
+No parameters.
+
+## clear_events
+
+Clear all captured events from the buffer.
+
+No parameters.

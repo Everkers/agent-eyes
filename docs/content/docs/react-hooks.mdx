@@ -1,0 +1,107 @@
+---
+title: React Hooks
+description: API reference for useAgentEyes, useAgentEvents, and useAgentSnapshot.
+---
+
+All hooks require `AgentEyesProvider` to be mounted above them in the component tree.
+
+## useAgentEyes
+
+Returns the `AgentEyes` instance directly.
+
+```tsx
+import { useAgentEyes } from 'agent-eyes/react';
+
+function MyComponent() {
+  const eyes = useAgentEyes();
+
+  // Access the full API
+  eyes.getEvents('network');
+  eyes.getRecent(10);
+  eyes.clear();
+  eyes.snapshot();
+}
+```
+
+### Return type
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `start()` | `void` | Start all collectors |
+| `stop()` | `void` | Stop all collectors |
+| `getEvents(type?)` | `AgentEvent[]` | Get events, optionally filtered by type |
+| `getRecent(n?)` | `AgentEvent[]` | Get last N events |
+| `subscribe(fn)` | `() => void` | Subscribe to real-time events |
+| `clear()` | `void` | Clear all events |
+| `snapshot()` | `object` | Full app state snapshot |
+| `toJSON()` | `string` | Serialized snapshot |
+| `isRunning` | `boolean` | Whether collectors are active |
+| `enabled` | `boolean` | Whether agent-eyes is enabled |
+
+## useAgentEvents
+
+Subscribe to events of a specific type. Returns a live-updating array.
+
+```tsx
+import { useAgentEvents } from 'agent-eyes/react';
+
+function ErrorList() {
+  const errors = useAgentEvents('error');
+
+  return (
+    <ul>
+      {errors.map((err, i) => (
+        <li key={i}>{err.message}</li>
+      ))}
+    </ul>
+  );
+}
+```
+
+### Parameters
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `type` | `AgentEvent['type']` | Event type to filter: `'log'`, `'network'`, `'error'`, `'dom-snapshot'`, `'performance'`, `'react-component'` |
+
+### Return type
+
+`AgentEvent[]` — array of events matching the specified type, updated in real-time.
+
+## useAgentSnapshot
+
+Returns a full application state snapshot, updated in real-time.
+
+```tsx
+import { useAgentSnapshot } from 'agent-eyes/react';
+
+function Dashboard() {
+  const snapshot = useAgentSnapshot();
+
+  return (
+    <div>
+      <p>Logs: {snapshot.logs.length}</p>
+      <p>Network: {snapshot.network.length}</p>
+      <p>Errors: {snapshot.errors.length}</p>
+    </div>
+  );
+}
+```
+
+### Return type
+
+```ts
+{
+  logs: AgentEvent[];
+  network: AgentEvent[];
+  errors: AgentEvent[];
+  dom: AgentEvent[];
+  performance: AgentEvent[];
+  components: AgentEvent[];
+  meta: {
+    url: string;
+    timestamp: number;
+    eventCount: number;
+  };
+}
+```

@@ -1,0 +1,89 @@
+---
+title: Security
+description: How agent-eyes protects sensitive data and stays safe in production.
+---
+
+import { Callout } from 'fumadocs-ui/components/callout';
+
+## Production safety
+
+agent-eyes auto-detects production environments and becomes a complete no-op:
+
+- No monkey-patching of `console`, `fetch`, or `XMLHttpRequest`
+- No WebSocket connections
+- No DOM observation
+- No performance observers
+- Zero runtime overhead
+
+### Detection logic
+
+The library checks these signals in order:
+
+1. Vite's `import.meta.env.DEV` / `import.meta.env.MODE`
+2. `process.env.NODE_ENV === 'development'`
+3. `window.location.hostname` is `localhost`, `127.0.0.1`, or `0.0.0.0`
+
+If none match, agent-eyes assumes production and all methods return empty results.
+
+### Force override
+
+You can explicitly control the behavior:
+
+```ts
+// Force enable (e.g. staging environment)
+const eyes = new AgentEyes({ enabled: true });
+
+// Force disable (e.g. local testing without agent-eyes)
+const eyes = new AgentEyes({ enabled: false });
+```
+
+<Callout type="warn">
+Setting `enabled: true` in production will activate all collectors. Only do this in controlled environments.
+</Callout>
+
+## Data redaction
+
+Sensitive data is automatically redacted from captured events. By default, these headers are redacted:
+
+- `authorization`
+- `cookie`
+- `set-cookie`
+- `x-api-key`
+
+### Custom redaction patterns
+
+Add your own patterns using strings or regular expressions:
+
+```ts
+const eyes = new AgentEyes({
+  redactPatterns: [
+    'x-custom-token',
+    /password/i,
+    /secret/i,
+    /session/i,
+  ],
+});
+```
+
+Redaction applies to:
+- Request and response headers
+- Request and response bodies (top-level keys matching patterns)
+
+### How redaction works
+
+When a header name or body key matches a redaction pattern, its value is replaced with `[REDACTED]`. The key name is preserved so agents can still see what data exists without seeing the actual values.
+
+## WebSocket security
+
+The MCP bridge WebSocket server:
+
+- Only listens on `localhost` by default
+- Does not accept connections from external hosts
+- Uses a simple event-streaming protocol (no auth required for local dev)
+
+## Recommendations
+
+- Never set `enabled: true` in production deployments
+- Use `redactPatterns` to cover any app-specific sensitive fields
+- The Vite plugin only activates in dev mode — production builds exclude all agent-eyes code
+- Review the `ignorePatterns` network option to skip sensitive API endpoints entirely

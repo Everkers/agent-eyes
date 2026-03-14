@@ -1,0 +1,18 @@
+{
+  "title": "Documentation",
+  "pages": [
+    "---Getting Started---",
+    "index",
+    "---Guides---",
+    "configuration",
+    "mcp-tools",
+    "vite-plugin",
+    "---Framework Guides---",
+    "react",
+    "nextjs",
+    "---Reference---",
+    "react-hooks",
+    "security",
+    "api"
+  ]
+}

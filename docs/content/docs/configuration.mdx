@@ -1,0 +1,137 @@
+---
+title: Configuration
+description: Customize collectors, filters, redaction, and buffer settings.
+---
+
+import { Callout } from 'fumadocs-ui/components/steps';
+
+The `AgentEyes` constructor accepts a config object to control every aspect of data collection.
+
+## Basic Config
+
+```ts
+const eyes = new AgentEyes({
+  maxBufferSize: 500,    // max events in memory (default: 500)
+  enabled: true,         // force enable/disable (auto-detects by default)
+  mcpBridge: true,       // connect to MCP server WebSocket
+});
+```
+
+## Enabling/Disabling Collectors
+
+Toggle individual collectors on or off:
+
+```ts
+const eyes = new AgentEyes({
+  collectors: {
+    console: true,          // default: true
+    network: true,          // default: true
+    errors: true,           // default: true
+    dom: true,              // default: true
+    performance: true,      // default: true
+    reactComponents: false, // default: false (opt-in)
+  },
+  mcpBridge: true,
+});
+```
+
+## Console Options
+
+```ts
+{
+  console: {
+    levels: ['log', 'warn', 'error'], // which levels to capture
+    maxArgLength: 5000,                // truncate serialized args
+    stackTraceAll: false,              // stack traces for all levels
+  }
+}
+```
+
+## Network Options
+
+```ts
+{
+  network: {
+    methods: ['GET', 'POST'],          // filter by HTTP method
+    captureRequestHeaders: true,
+    captureResponseHeaders: true,
+    captureRequestBody: true,
+    captureResponseBody: true,
+    maxBodySize: 10000,                // truncate large bodies
+    ignorePatterns: [/analytics/, '/health'],
+  }
+}
+```
+
+## DOM Options
+
+```ts
+{
+  dom: {
+    maxDepth: 8,                // max tree traversal depth
+    debounceMs: 1000,           // debounce mutation snapshots
+    disableAutoSnapshot: false, // disable auto-snapshots on mutations
+    extraAttributes: ['data-cy'], // additional attributes to capture
+  }
+}
+```
+
+## Performance Options
+
+```ts
+{
+  performance: {
+    disableLCP: false,    // disable Largest Contentful Paint tracking
+    disableMemory: false, // disable memory usage tracking
+  }
+}
+```
+
+## React Component Options
+
+```ts
+{
+  reactComponents: {
+    includeNames: [/^App/, 'Header'],  // only track matching components
+    excludeNames: [/^Styled/],         // skip these components
+    captureProps: true,                 // capture component props
+    maxPropsDepth: 2,                  // depth for serializing props
+  }
+}
+```
+
+## Event Filtering
+
+Filter events before they enter the buffer:
+
+```ts
+const eyes = new AgentEyes({
+  filter: (event) => {
+    // Drop noisy XHR polling
+    if (event.type === 'network' && event.url.includes('/poll')) return false;
+    return true;
+  },
+  onEvent: (event) => {
+    // Called for every captured event
+    console.log('Captured:', event.type);
+  },
+});
+```
+
+## Redaction
+
+Automatically redact sensitive data from headers and bodies:
+
+```ts
+const eyes = new AgentEyes({
+  redactPatterns: [
+    'authorization',
+    'cookie',
+    'x-api-key',
+    /password/i,
+    /secret/i,
+  ],
+});
+```
+
+See [Security](/docs/security) for more on how redaction works.

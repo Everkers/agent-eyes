@@ -1,0 +1,154 @@
+---
+title: API Reference
+description: Complete API reference for the AgentEyes class and event types.
+---
+
+## AgentEyes
+
+The main class that orchestrates all collectors.
+
+### Constructor
+
+```ts
+new AgentEyes(config?: AgentEyesConfig)
+```
+
+### Methods
+
+| Method | Return | Description |
+|--------|--------|-------------|
+| `start()` | `void` | Start all enabled collectors |
+| `stop()` | `void` | Stop all collectors and clean up |
+| `getEvents(type?)` | `AgentEvent[]` | Get all events, optionally filtered by type |
+| `getRecent(n?)` | `AgentEvent[]` | Get the last N events (default: 20) |
+| `subscribe(fn)` | `() => void` | Subscribe to real-time events. Returns unsubscribe function |
+| `clear()` | `void` | Clear all captured events |
+| `snapshot()` | `object` | Full application state snapshot |
+| `toJSON()` | `string` | Serialized snapshot as JSON string |
+
+### Properties
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `isRunning` | `boolean` | Whether collectors are currently active |
+| `enabled` | `boolean` | Whether agent-eyes is enabled |
+
+## Event Types
+
+All events share a `type` discriminator and `timestamp` field.
+
+### LogEntry
+
+```ts
+{
+  type: 'log';
+  level: 'log' | 'warn' | 'error' | 'debug' | 'info';
+  args: unknown[];
+  timestamp: number;
+  stack?: string;
+}
+```
+
+### NetworkEntry
+
+```ts
+{
+  type: 'network';
+  method: string;
+  url: string;
+  status?: number;
+  requestHeaders?: Record<string, string>;
+  responseHeaders?: Record<string, string>;
+  requestBody?: unknown;
+  responseBody?: unknown;
+  duration?: number;
+  timestamp: number;
+  error?: string;
+}
+```
+
+### ErrorEntry
+
+```ts
+{
+  type: 'error';
+  message: string;
+  stack?: string;
+  source?: string;
+  lineno?: number;
+  colno?: number;
+  timestamp: number;
+}
+```
+
+### DOMSnapshotEntry
+
+```ts
+{
+  type: 'dom-snapshot';
+  html: string;
+  url: string;
+  viewport: { width: number; height: number };
+  timestamp: number;
+}
+```
+
+### PerformanceEntry
+
+```ts
+{
+  type: 'performance';
+  metrics: {
+    domContentLoaded?: number;
+    loadComplete?: number;
+    firstPaint?: number;
+    firstContentfulPaint?: number;
+    largestContentfulPaint?: number;
+    memoryUsage?: number;
+  };
+  timestamp: number;
+}
+```
+
+### ReactComponentEntry
+
+```ts
+{
+  type: 'react-component';
+  name: string;
+  props: Record<string, unknown>;
+  state?: Record<string, unknown>;
+  renderCount: number;
+  timestamp: number;
+}
+```
+
+## Exports
+
+```ts
+// Core
+import { AgentEyes } from 'agent-eyes';
+
+// React
+import {
+  AgentEyesProvider,
+  useAgentEyes,
+  useAgentEvents,
+  useAgentSnapshot,
+} from 'agent-eyes/react';
+
+// Vite
+import { agentEyesPlugin } from 'agent-eyes/vite';
+
+// Types
+import type {
+  AgentEvent,
+  AgentEyesConfig,
+  LogEntry,
+  NetworkEntry,
+  ErrorEntry,
+  DOMSnapshotEntry,
+  PerformanceEntry,
+  ReactComponentEntry,
+} from 'agent-eyes';
+```

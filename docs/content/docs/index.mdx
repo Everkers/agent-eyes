@@ -1,0 +1,83 @@
+---
+title: Getting Started
+description: Give your AI coding agent real-time visibility into your running web app.
+---
+
+import { Steps, Step } from 'fumadocs-ui/components/steps';
+import { Callout } from 'fumadocs-ui/components/callout';
+
+agent-eyes is a lightweight TypeScript library that captures console logs, network requests, DOM snapshots, runtime errors, performance metrics, and screenshots from your running web app — and streams them to your coding agent via MCP.
+
+## Architecture
+
+```
+Browser (agent-eyes client) → WebSocket → MCP Server ← stdio → AI Agent
+```
+
+The browser client collects events and streams them over WebSocket to the MCP server. Your agent connects to the MCP server via stdio and queries app state using standard MCP tools.
+
+## Quick Start
+
+<Steps>
+<Step>
+### Install
+
+```bash
+npm install agent-eyes
+```
+</Step>
+
+<Step>
+### Add to your app
+
+The simplest setup — just create an instance and start it:
+
+```ts
+import { AgentEyes } from 'agent-eyes';
+
+const eyes = new AgentEyes({ mcpBridge: true });
+eyes.start();
+```
+
+Setting `mcpBridge: true` connects to the MCP server's WebSocket on `ws://localhost:9960`.
+</Step>
+
+<Step>
+### Connect your agent
+
+Add agent-eyes to your MCP config (e.g. `.kiro/settings/mcp.json` or `mcp.json`):
+
+```json
+{
+  "mcpServers": {
+    "agent-eyes": {
+      "command": "npx",
+      "args": ["agent-eyes"]
+    }
+  }
+}
+```
+
+That's it. Your agent now has 11 tools to inspect your running app.
+</Step>
+</Steps>
+
+<Callout type="info">
+agent-eyes auto-detects production environments and becomes a complete no-op — zero overhead, zero network calls, zero DOM access. See [Security](/docs/security) for details.
+</Callout>
+
+## Framework-specific setup
+
+For a better DX, use the framework integrations:
+
+- [React Provider](/docs/react) — `AgentEyesProvider` component
+- [Next.js](/docs/nextjs) — provider setup for App Router
+- [Vite Plugin](/docs/vite-plugin) — auto-injects agent-eyes in dev mode
+
+## What's next?
+
+<Cards>
+  <Card title="Configuration" href="/docs/configuration" description="Customize collectors, filters, and redaction" />
+  <Card title="MCP Tools" href="/docs/mcp-tools" description="All 11 tools your agent can use" />
+  <Card title="React Hooks" href="/docs/react-hooks" description="useAgentEyes, useAgentEvents, useAgentSnapshot" />
+</Cards>

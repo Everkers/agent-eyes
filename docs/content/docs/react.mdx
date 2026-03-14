@@ -1,0 +1,71 @@
+---
+title: React
+description: Use the AgentEyesProvider to integrate agent-eyes into React apps.
+---
+
+The React integration provides a context provider that manages the `AgentEyes` lifecycle and exposes hooks for accessing events.
+
+## Setup
+
+Wrap your app with `AgentEyesProvider`:
+
+```tsx title="src/App.tsx"
+import { AgentEyesProvider } from 'agent-eyes/react';
+
+export default function App() {
+  return (
+    <AgentEyesProvider config={{ mcpBridge: true }}>
+      <YourApp />
+    </AgentEyesProvider>
+  );
+}
+```
+
+The provider:
+- Creates an `AgentEyes` instance with your config
+- Starts collectors on mount
+- Cleans up on unmount
+- Makes the instance available via hooks
+
+## Configuration
+
+Pass any `AgentEyesConfig` options through the `config` prop:
+
+```tsx
+<AgentEyesProvider
+  config={{
+    mcpBridge: true,
+    collectors: {
+      reactComponents: true,
+    },
+    network: {
+      ignorePatterns: [/sockjs/],
+    },
+    redactPatterns: ['authorization', /token/i],
+  }}
+>
+  <App />
+</AgentEyesProvider>
+```
+
+## Using hooks
+
+Once the provider is in place, use the hooks anywhere in your component tree:
+
+```tsx
+import { useAgentEyes, useAgentEvents } from 'agent-eyes/react';
+
+function DebugPanel() {
+  const eyes = useAgentEyes();
+  const errors = useAgentEvents('error');
+
+  return (
+    <div>
+      <p>Running: {eyes.isRunning ? 'yes' : 'no'}</p>
+      <p>Errors: {errors.length}</p>
+    </div>
+  );
+}
+```
+
+See [React Hooks](/docs/react-hooks) for the full hooks API.

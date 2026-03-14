@@ -1,0 +1,12 @@
+node_modules
+dist
+.next
+.turbo
+*.tsbuildinfo
+.env
+.env.local
+.DS_Store
+
+# Example apps build artifacts
+examples/*/node_modules
+examples/*/.next

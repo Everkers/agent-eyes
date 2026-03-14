@@ -1,0 +1,93 @@
+---
+title: Next.js
+description: Set up agent-eyes in a Next.js App Router project.
+---
+
+import { Callout } from 'fumadocs-ui/components/callout';
+
+Next.js App Router uses server components by default, so agent-eyes needs to run in a client component.
+
+## Setup
+
+Create a client-side provider component:
+
+```tsx title="app/agent-eyes-provider.tsx"
+'use client';
+
+import { AgentEyesProvider } from 'agent-eyes/react';
+
+export default function AgentEyesWrapper({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <AgentEyesProvider config={{ mcpBridge: true }}>
+      {children}
+    </AgentEyesProvider>
+  );
+}
+```
+
+Then wrap your root layout:
+
+```tsx title="app/layout.tsx"
+import AgentEyesWrapper from './agent-eyes-provider';
+
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <html lang="en">
+      <body>
+        <AgentEyesWrapper>{children}</AgentEyesWrapper>
+      </body>
+    </html>
+  );
+}
+```
+
+<Callout type="warn">
+agent-eyes only runs in the browser. It will not execute during SSR or in server components. The provider handles this automatically.
+</Callout>
+
+## Next.js-specific considerations
+
+### Proxy objects
+
+Next.js App Router wraps `params` and `searchParams` in Proxy objects that throw warnings when enumerated. The React component collector handles this automatically — those keys are skipped during prop serialization.
+
+### React component tracking
+
+If you enable `reactComponents`, be aware that Next.js has many internal components. Use `excludeNames` to filter noise:
+
+```tsx
+<AgentEyesProvider
+  config={{
+    mcpBridge: true,
+    collectors: { reactComponents: true },
+    reactComponents: {
+      excludeNames: [/^Internal/, /^Hot/],
+    },
+  }}
+>
+  {children}
+</AgentEyesProvider>
+```
+
+### MCP config
+
+Add to your `.kiro/settings/mcp.json` or project `mcp.json`:
+
+```json
+{
+  "mcpServers": {
+    "agent-eyes": {
+      "command": "npx",
+      "args": ["agent-eyes"]
+    }
+  }
+}
+```
