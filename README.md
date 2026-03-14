@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="docs/assets/logo/logo.png" alt="AgentEyes" width="140" />
+  <img src="https://raw.githubusercontent.com/everkers/agent-eyes/main/docs/assets/logo/logo.png" alt="AgentEyes" width="140" />
 </p>
 
 <h1 align="center">AgentEyes</h1>
